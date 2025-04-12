@@ -1,0 +1,133 @@
+/* Activity Section */
+.activity-section {
+    width: 100%;
+    margin: auto;
+    padding: 20px 20px;
+    text-align: center;
+  }
+  
+  .activity-section-header h1 {
+    margin: 0;
+    padding: 10px 0;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 2rem;
+    color: #00683676; /* Jungle green effect */
+  }
+  
+  /* Activity Card */
+  .activity-card {
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    margin: 10px;
+    min-height: 150px;
+  }
+
+  .activity-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .activity-card-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: burlywood;
+    margin-bottom: 10px;
+  }
+  
+  .activity-card-description {
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.5;
+  }
+  
+  /* Slick Carousel Styling */
+  .slick-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    max-height: 100vh;
+  }
+  
+  .slick-prev,
+  .slick-next {
+    z-index: 10;
+    background: none;
+    border: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color:#234001
+  }
+
+  .slick-prev {
+    left: -20px;
+  }
+  
+  .slick-next {
+    right: -20px;
+  }
+
+  .slick-prev svg, .slick-next svg {
+    color:#234001
+  }
+  
+  .slick-dots li button:before {
+    font-size: 12px;
+    color: #7f8c8d;
+  }
+  
+  .slick-dots li.slick-active button:before {
+    color: #2c3e50;
+  }
+
+  /* Media query for screens smaller than 768px */
+@media (max-width: 768px) {
+  .activity-card {
+    padding: 15px;
+    min-height: 100px; /* Slightly smaller on tablets */
+  }
+  .activity-card-title {
+    font-size: 1.3rem;
+  }
+  .activity-card-description {
+    font-size: 0.9rem;
+  }
+  .slick-prev, .slick-next {
+    left: -10px;
+    right: -30px;
+    font-size: 30px;
+  }
+
+}
+
+/* Media query for screens smaller than 480px */
+@media (max-width: 480px) {
+  .activity-card {
+    padding: 10px;
+    min-height: 80px; /* Further reduced for mobile */
+  }
+  .activity-card-title {
+    font-size: 1.1rem;
+  }
+  .activity-card-description {
+    font-size: 0.8rem;
+  }
+  .slick-prev,
+  .slick-next {
+    font-size: 20px; /* Even smaller */
+  }
+
+  .slick-prev {
+    left: -15px; /* Bring it even closer */
+  }
+
+  .slick-next {
+    right: -15px;
+  }
+}
+  

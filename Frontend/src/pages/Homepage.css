@@ -1,0 +1,142 @@
+.homepage-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    /* margin-top: 10px; */
+  }
+  
+  
+  .main-section {
+    padding: 0;
+    margin: 0;
+
+  }
+  
+  .hero-section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background: url('/src/assets/forest.jpg') no-repeat center center/cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 40px;
+    margin: 0;
+  }
+  
+  .hero-title {
+    font-size: 2.5rem; /* 2xl */
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .hero-text {
+    font-size: 1.25rem; /* xl */
+    margin-bottom: 10px;
+    color: #fff;
+  }
+  
+  .hero-button {
+    background-color: #f0c36e; /* teal.400 */
+    color: #333;
+    font-size: 1.25rem; /* xl */
+    font-weight: bold;
+    padding: 16px 32px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .hero-button:hover {
+    background-color: #a96000; /* teal.500 */
+  }
+  
+  .featured-services {
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+
+  .section-title {
+    font-size: 2rem; /* xl */
+    font-weight: bold;
+    text-align: center;
+    color: burlywood;
+  }
+
+/* Media Queries for Smaller Screens */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .hero-title {
+    font-size: 2rem; /* xl */
+  }
+
+  .hero-text {
+    font-size: 1rem; /* lg */
+  }
+
+  .hero-button {
+    font-size: 1rem; /* lg */
+    padding: 12px 24px;
+  }
+
+  .section-title {
+    font-size: 1.5rem; /* lg */
+  }
+
+  .main-section {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .hero-title {
+    font-size: 1.75rem; /* lg */
+  }
+
+  .hero-text {
+    font-size: 0.875rem; /* base */
+  }
+
+  .hero-button {
+    font-size: 0.875rem; /* base */
+    padding: 10px 20px;
+  }
+
+  .section-title {
+    font-size: 1.25rem; /* base */
+  }
+
+  .main-section {
+    padding: 12px;
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* Prevent any horizontal scrolling */
+}

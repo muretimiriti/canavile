@@ -1,0 +1,14 @@
+# Allow all web crawlers to access all content
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://canaville.com/sitemap.xml
+
+# Prevent crawlers from accessing specific folders (if needed)
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
+
+# Crawl-delay for all bots (optional)
+Crawl-delay: 10 

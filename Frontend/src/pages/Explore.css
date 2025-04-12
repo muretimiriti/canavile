@@ -1,0 +1,249 @@
+.activity-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    margin-bottom: 20px;
+    color: inherit;
+  }
+  
+  .activity-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .activity-card h3 {
+    font-size: 1.5rem; /* xl */
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .activity-card p {
+    font-size: 1rem; /* lg */
+    margin-bottom: 0;
+  }
+
+  /* Explore.css */
+
+/* Container for the whole explore page */
+.explore-container {
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+  background-attachment: fixed;
+}
+
+/* Menu category styling */
+.menu-category {
+  margin-bottom: 40px;
+}
+
+.menu-category-title {
+  text-align: center;
+  color: #234001;
+  font-size: 2.5rem;
+  margin: 2rem 0;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Grid container for menu items */
+.menu-items {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 cards per row on large screens */
+  gap: 20px;
+  color: inherit; 
+}
+
+/* Individual menu card styling */
+.menu-item {
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.3s ease;
+  color: inherit; 
+}
+
+.menu-item:hover {
+  transform: translateY(-5px);
+}
+
+.menu-item h3,
+.menu-item p {
+  color: inherit;
+}
+
+/* Alternating colors: odd items get jungle green with white text; even items get cream with dark text */
+.menu-items .menu-item:nth-child(odd) {
+  background-color: darkgreen; /* Jungle green */
+  color: #fff;
+}
+
+
+.menu-items .menu-item:nth-child(even) {
+  background-color: #f5f5dc; /* Cream */
+  color: #333;
+}
+
+/* Styles for the activity sub-sections within each card */
+.activity-subsection {
+  margin-top: 15px;
+  text-align: left; /* Align list to left within the card */
+}
+
+.activity-subsection-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.activity-subsection-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.activity-subsection-item {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.activity-subsection-item::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #234001;
+}
+
+/* Container for activity cards */
+.activities-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+}
+
+/* Base style for an activity card */
+.activity-card {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+/* Image styling */
+.activity-card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Content styling */
+.activity-card-content {
+  padding: 1.5rem;
+}
+
+/* Title styling */
+.activity-card-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+/* Description styling */
+.activity-card-description {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+/* Alternating background colors */
+.activities-container .activity-card:nth-child(odd) {
+  background-color: #f5f5dc !important; /* Cream */
+}
+
+.activities-container .activity-card:nth-child(odd) .activity-card-title,
+.activities-container .activity-card:nth-child(odd) .activity-card-description,
+.activities-container .activity-card:nth-child(odd) .activity-subsection-item,
+.activities-container .activity-card:nth-child(odd) .activity-subsection-item::before {
+  color: #000000 !important;
+}
+
+.activities-container .activity-card:nth-child(even) {
+  background-color: #234001 !important; /* Jungle green */
+}
+
+.activities-container .activity-card:nth-child(even) .activity-card-title,
+.activities-container .activity-card:nth-child(even) .activity-card-description,
+.activities-container .activity-card:nth-child(even) .activity-subsection-item,
+.activities-container .activity-card:nth-child(even) .activity-subsection-item::before {
+  color: #ffffff !important;
+}
+
+/* Remove any default text colors */
+.activity-card-title,
+.activity-card-description,
+.activity-subsection-item,
+.activity-subsection-item::before {
+  color: inherit;
+}
+
+/* Media Queries */
+/* Tablets */
+@media (max-width: 1024px) {
+  .activities-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .activities-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .activity-card-image {
+    height: 180px;
+  }
+  
+  .activity-card-title {
+    font-size: 1.2rem;
+  }
+  
+  .activity-card-description {
+    font-size: 0.9rem;
+  }
+}
+
+
+/* MEDIA QUERIES */
+
+/* Tablets & Medium Screens */
+@media (max-width: 1024px) {
+  .menu-items {
+    grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
+  }
+}
+
+/* Mobile Devices */
+@media (max-width: 768px) {
+  .menu-items {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .menu-category-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+  .menu-items {
+    grid-template-columns: 1fr; /* 1 card per row */
+  }
+  
+  .menu-category-title {
+    font-size: 1.3rem;
+  }
+}

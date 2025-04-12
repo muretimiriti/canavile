@@ -1,0 +1,90 @@
+.transactions-container {
+    display: flex;
+    width: 100%;
+    transition: margin-left 0.3s ease;
+  }
+  
+  .sidebar-open {
+    margin-left: 250px;
+  }
+  
+  .sidebar-toggle {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    z-index: 1000;
+    color: #333;
+  }
+  
+  .sidebar-toggle:hover {
+    color: #3498db;
+  }
+  
+  .transactions-content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  
+  p {
+    font-size: 1.1rem;
+    color: #555;
+  }
+  
+  .transactions-table {
+    margin-top: 20px;
+    overflow-x: auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    background: #f4f4f4;
+  }
+  
+  .status {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+  }
+  
+  .status-icon {
+    margin-right: 5px;
+    font-size: 1.2rem;
+  }
+  
+  .success {
+    color: green;
+  }
+  
+  .pending {
+    color: orange;
+  }
+  
+  .failed {
+    color: red;
+  }
+  
+  .no-data {
+    text-align: center;
+    font-style: italic;
+    color: #999;
+  }
+  

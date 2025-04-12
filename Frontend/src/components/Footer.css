@@ -1,0 +1,81 @@
+.footer {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    background-color: #012b1b;
+    color: #fff;
+  }
+  
+  .footer-section {
+    flex: 1;
+    margin: 0 10px;
+    text-align: center; /* Centering the content inside each section */
+  }
+  
+  .footer-section h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: silver;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+  }
+  
+  .footer-section ul {
+    list-style: none; /* Removing default list styling */
+    padding: 0;
+  }
+  
+  .footer-section li {
+    margin-bottom: 10px;
+  }
+  
+  .footer-section a {
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.2s;
+    display: inline-block;
+  }
+  
+  .footer-section a:hover {
+    color: #0f5e47; /* Jungle green hover effect */
+  }
+
+  .icon {
+    margin-right: 10px; /* Spacing between icon and text */
+    color: burlywood;
+  }
+
+  @media (max-width: 1024px) {
+    .footer {
+        flex-wrap: wrap; /* Allow sections to wrap */
+        justify-content: center;
+    }
+    
+    .footer-section {
+        flex: 1 1 40%; /* 2 columns layout */
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+  .footer {
+      flex-direction: column; /* Stack sections vertically */
+      align-items: center;
+      text-align: center;
+      padding: 30px 15px;
+  }
+
+  .footer-section {
+      flex: none;
+      width: 100%;
+      margin-bottom: 20px;
+  }
+
+  .footer-section h3 {
+      font-size: 1.3rem; /* Slightly smaller heading */
+  }
+
+  .footer-section a {
+      font-size: 0.9rem; /* Smaller links */
+  }
+}

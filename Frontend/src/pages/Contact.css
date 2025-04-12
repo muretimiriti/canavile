@@ -1,0 +1,17 @@
+.contact-page {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .contact-page h1 {
+    font-size: 2.5rem; /* 2xl */
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .contact-page p {
+    font-size: 1.25rem; /* xl */
+    margin-bottom: 10px;
+  }

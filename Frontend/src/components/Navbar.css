@@ -1,0 +1,158 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+.navbar {
+  width: 100%;
+  position: fixed;
+  margin: 0 auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #f5f5dc;
+  transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+.navbar.scrolled {
+  background-color: rgba(239, 239, 220, 0.8);
+  backdrop-filter: blur(5px);
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.nav-logo{
+  width: 60px;
+  height: auto;
+}
+
+.nav-menu{
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.nav-link{
+  position: relative;
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s ease;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+}
+
+.nav-link:hover {
+  color: #d2b48c; 
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #d2b48c;
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: all 0.3s ease-in-out;
+}
+
+.nav-link:hover::after {
+  visibility: visible;
+  transform: scaleX(1);
+}
+
+.mobile-toggle{
+  display: none;
+  background: none;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  width: 100%;
+  background: #f5f5dc;
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.mobile-menu.scrolled {
+  background-color: rgba(239, 239, 220, 0.8); 
+  backdrop-filter: blur(5px);
+}
+
+.mobile-nav-link {
+  position: relative;
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s ease;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+}
+
+.mobile-nav-link:hover {
+  color: #d2b48c;
+}
+
+.mobile-nav-link::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #d2b48c;
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: all 0.3s ease-in-out;
+}
+
+.mobile-nav-link:hover::after {
+  visibility: visible;
+  transform: scaleX(1);
+}
+
+@media (max-width: 768px) {
+  .navbar-container {
+    padding: 0.5rem 1rem;
+  }
+
+  .nav-menu {
+    display: none;
+  }
+
+  .mobile-toggle {
+    display: block;
+  }
+
+  .mobile-menu {
+    display: flex;
+  }
+  
+}
