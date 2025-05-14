@@ -113,35 +113,52 @@ export const initiateSTKPush = async (phoneNumber: string, totalAmount: number) 
   return data;
 };
 
+// Import all activity images
+import overviewImage from "../assets/gallery/Canaville-Resort-overview(1).jpg";
+import campingImage from "../assets/gallery/IMG-20221213-WA0015.jpg";
+import bonfireImage from "../assets/gallery/IMG-20221213-WA0022.jpg";
+import privateEventsImage from "../assets/gallery/IMG-20240731-WA0125.jpg";
+import parkChillImage from "../assets/gallery/IMG-20221221-WA0050.jpg";
+import corporateImage from "../assets/gallery/IMG-20240731-WA0083.jpg";
+import sportsImage from "../assets/gallery/IMG_20221119_160117.jpg";
+import archeryImage from "../assets/gallery/Img-165.jpg";
+import dartsImage from "../assets/gallery/IMG_20221126_160716.jpg";
+import boardGamesImage from "../assets/gallery/IMG-20230403-WA0009.jpg";
+import bikeImage from "../assets/gallery/IMG_20221208_173230.jpg";
+import paintingImage from "../assets/gallery/IMG_20230214_182349.jpg";
+import vrImage from "../assets/gallery/IMG-20221213-WA0012.jpg";
+import bonfireDJImage from "../assets/gallery/IMG-20230216-WA0020.jpg";
+import sportsNightImage from "../assets/gallery/IMG-20240731-WA0113.jpg";
+import foodImage from "../assets/gallery/IMG-20230403-WA0050.jpg";
 
 export const ACTIVITIES = [
   {
-    image: "/src/assets/gallery/Canaville-Resort-overview(1).jpg",
+    image: overviewImage,
     title: "Getaways & Relaxation",
     description:
       "Escape the hustle and immerse yourself in nature's tranquility. Our cozy accommodations, breathtaking views, and personalized service make Canaville the perfect retreat for couples, families, and solo travelers."
   },
   {
-    image: "/src/assets/gallery/IMG-20221213-WA0015.jpg",
+    image: campingImage,
     title: "Camping & Adventure Retreats",
     description:
       "Reconnect with nature at our well-equipped camping grounds. Whether you prefer classic camping or glamping, enjoy sleeping under the stars, guided nature walks, and thrilling outdoor experiences."
   },
   {
-    image: "/src/assets/gallery/IMG-20221213-WA0022.jpg",
+    image: bonfireImage,
     title: "Bonfire Nights & Outdoor Movie Experiences",
     description:
       "Nothing beats the warmth of a crackling bonfire under the stars. Enjoy outdoor movie screenings, storytelling, and marshmallow roasting, creating memories that last a lifetime. Perfect for date nights, group hangouts, and team bonding."
   },
   {
-    image: "/src/assets/gallery/IMG-20240731-WA0125.jpg",
+    image: privateEventsImage,
     title: "Private & Exclusive Events",
     description:
       "Planning a special event? Canaville provides the perfect backdrop for birthdays, bridal showers, anniversaries, and corporate gatherings. Our team handles every detail to ensure an unforgettable experience."
   },
   {
-    image: "/src/assets/gallery/IMG-20221221-WA0050.jpg",
-    title: " Park & Chill Experience",
+    image: parkChillImage,
+    title: "Park & Chill Experience",
     description:
       "Unwind in a vibrant outdoor setting filled with good vibes. Enjoy:",
     subSections: [
@@ -156,7 +173,7 @@ export const ACTIVITIES = [
     ]
   },
   {
-    image: "/src/assets/gallery/IMG-20240731-WA0083.jpg",
+    image: corporateImage,
     title: "Corporate Team-Building & Strategy Retreats",
     description:
       "Boost team morale with our custom corporate packages. Engage in:",
@@ -171,7 +188,7 @@ export const ACTIVITIES = [
     ]
   },
   {
-    image: "/src/assets/gallery/IMG_20221119_160117.jpg",
+    image: sportsImage,
     title: "Sports & Ball Games* – Get in the Game!",
     description:
       "For thrill-seekers and sports lovers, we offer:",
@@ -187,7 +204,7 @@ export const ACTIVITIES = [
     ]
   },
   {
-    image: "/src/assets/gallery/Img-165.jpg",
+    image: archeryImage,
     title: "Archery – Test Your Focus",
     subSections: [
       {
@@ -199,7 +216,7 @@ export const ACTIVITIES = [
     ]
   },
   {
-    image: "/src/assets/gallery/IMG_20221126_160716.jpg",
+    image: dartsImage,
     title: "Darts & Pool Table* – Aim, Shoot & Win!",
     subSections: [
       {
@@ -211,13 +228,13 @@ export const ACTIVITIES = [
     ]
   },
   {
-    image: "/src/assets/gallery/IMG-20230403-WA0009.jpg",
+    image: boardGamesImage,
     title: "Board Games & Giant Jenga",
     description:
       "Enjoy classic board games or giant Jenga for some lighthearted competition and bonding.",
   },
   {
-    image: "/src/assets/gallery/IMG_20221208_173230.jpg",
+    image: bikeImage,
     title: "Bike Riding – Explore the Outdoors",
     subSections: [
       {
@@ -229,7 +246,7 @@ export const ACTIVITIES = [
     ]
   },
   {
-    image: "/src/assets/gallery/IMG_20230214_182349.jpg",
+    image: paintingImage,
     title: "Outdoor Painting – Unleash Your Creativity",
     subSections: [
       {
@@ -242,7 +259,7 @@ export const ACTIVITIES = [
     ]
   },
   {
-    image: "/src/assets/gallery/IMG-20221213-WA0012.jpg",
+    image: vrImage,
     title: "VR & PlayStation Gaming Zone",
     subSections: [
       {
@@ -254,7 +271,7 @@ export const ACTIVITIES = [
     ]
   },
   {
-    image: "/src/assets/gallery/IMG-20230216-WA0020.jpg",
+    image: bonfireDJImage,
     title: "Bonfire, DJ & Dance Competition",
     description: "As the sun sets, the energy rises!",
     subSections: [
@@ -268,7 +285,7 @@ export const ACTIVITIES = [
     ]
   },
   {
-    image: "/src/assets/gallery/IMG-20240731-WA0113.jpg",
+    image: sportsNightImage,
     title: "Sports & Entertainment Nights",
     subSections: [
       {
@@ -280,14 +297,12 @@ export const ACTIVITIES = [
     ]
   },
   {
-    image: "/src/assets/gallery/IMG-20230403-WA0050.jpg",
+    image: foodImage,
     title: "Food & Drinks* – A Culinary Experience",
     description:
       "Indulge in delicious meals and refreshing drinks as you soak in Canaville's peaceful ambiance. Our carefully crafted menu satisfies every craving, making every bite an experience."
   },
-]
-
-
+];
 
 const Explore: React.FC = () => {
   return (

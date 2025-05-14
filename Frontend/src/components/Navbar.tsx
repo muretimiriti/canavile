@@ -3,6 +3,7 @@ import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import './Navbar.css';
 import Sidebar from "./Sidebar"; // Import the Sidebar component
+import logo from "../assets/canavillelogo2.png"; // Import the logo
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -26,7 +27,7 @@ const Navbar = () => {
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="navbar-container">
-        <img src="/src/assets/canavillelogo2.png" className="nav-logo"/>
+        <img src={logo} alt="Canaville Logo" className="nav-logo"/>
 
         <div className="nav-menu">
           <Link to="/" className="nav-link">Home</Link>

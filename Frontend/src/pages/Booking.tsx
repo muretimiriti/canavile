@@ -1,9 +1,23 @@
+/**
+ * Booking Component
+ * 
+ * This component handles the entire booking process for Canaville Resort.
+ * It includes functionality for:
+ * - Contact information collection
+ * - Activity selection and pricing
+ * - Accommodation booking with availability checking
+ * - Food and beverage ordering
+ * - Total cost calculation
+ * - Form validation and submission
+ */
+
 import React, { useState, useEffect } from "react";
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import "./Booking.css";
 import { Footer } from "../components/Footer";
 import Navbar from "../components/Navbar";
+import mountainImage from "../assets/mountain.jpg";
 
 interface ActivityOption {
   name: string;
@@ -295,16 +309,9 @@ const BookingProgress = ({ activeTab }: { activeTab: string }) => {
 
 const Booking = () => {
   const [activeTab, setActiveTab] = useState("contact");
-  const [showInquiry, setShowInquiry] = useState(false);
   const [isContactFilled, setIsContactFilled] = useState(false);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [selectedMenuItems, setSelectedMenuItems] = useState<SelectedMenuItem[]>([]);
-  const [inquiryData, setInquiryData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
   const [formData, setFormData] = useState<BookingData>({
     name: "",
     email: "",
@@ -327,6 +334,16 @@ const Booking = () => {
   const [groundAvailability, setGroundAvailability] = useState<Record<string, boolean>>({});
   const [accommodationAvailability, setAccommodationAvailability] = useState<Record<string, AccommodationAvailability>>({});
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [isCheckingAvailability, setIsCheckingAvailability] = useState(false);
+  const [availabilityError, setAvailabilityError] = useState<string | null>(null);
+
+  // Get today's date in YYYY-MM-DD format
+  const today = new Date().toISOString().split('T')[0];
+  
+  // Get next year's date for max date
+  const nextYear = new Date();
+  nextYear.setFullYear(nextYear.getFullYear() + 1);
+  const maxDate = nextYear.toISOString().split('T')[0];
 
   useEffect(() => {
     if (formData.date) {
@@ -385,69 +402,93 @@ const Booking = () => {
   };
 
   const checkAccommodationAvailability = async (checkInDate: string, checkOutDate: string, accommodationType: string) => {
-    const bookingsRef = collection(db, "bookings");
-    const q = query(
-      bookingsRef,
-      where("status", "==", "Confirmed")
-    );
-    const querySnapshot = await getDocs(q);
-    
-    const conflictingBookings = querySnapshot.docs.some(doc => {
-      const booking = doc.data();
-      if (!booking.accommodation || !booking.checkInDate || !booking.checkOutDate) return false;
+    try {
+      // Validate dates first
+      if (!checkInDate || !checkOutDate) {
+        throw new Error("Check-in and check-out dates are required");
+      }
+
+      const startDate = new Date(checkInDate);
+      const endDate = new Date(checkOutDate);
       
-      // Check if any accommodation in the booking matches the type we're checking
-      const hasMatchingAccommodation = booking.accommodation.some((acc: AccommodationOption) => acc.type === accommodationType);
-      if (!hasMatchingAccommodation) return false;
+      if (startDate >= endDate) {
+        throw new Error("Check-out date must be after check-in date");
+      }
 
-      // Check for date overlap
-      const bookingStart = new Date(booking.checkInDate);
-      const bookingEnd = new Date(booking.checkOutDate);
-      const newStart = new Date(checkInDate);
-      const newEnd = new Date(checkOutDate);
+      if (startDate < new Date()) {
+        throw new Error("Check-in date cannot be in the past");
+      }
 
-      return (newStart < bookingEnd && newEnd > bookingStart);
-    });
+      const bookingsRef = collection(db, "bookings");
+      const q = query(
+        bookingsRef,
+        where("status", "in", ["Confirmed", "Pending"]),
+        where("checkInDate", "!=", null),
+        where("checkOutDate", "!=", null)
+      );
+      
+      const querySnapshot = await getDocs(q);
+      
+      const conflictingBookings = querySnapshot.docs.some(doc => {
+        const booking = doc.data();
+        if (!booking.accommodation || !booking.checkInDate || !booking.checkOutDate) return false;
+        
+        // Check if any accommodation in the booking matches the type we're checking
+        const hasMatchingAccommodation = booking.accommodation.some((acc: AccommodationOption) => acc.type === accommodationType);
+        if (!hasMatchingAccommodation) return false;
 
-    return !conflictingBookings;
+        // Check for date overlap
+        const bookingStart = new Date(booking.checkInDate);
+        const bookingEnd = new Date(booking.checkOutDate);
+        const newStart = new Date(checkInDate);
+        const newEnd = new Date(checkOutDate);
+
+        // Check if the new booking overlaps with existing booking
+        return (newStart < bookingEnd && newEnd > bookingStart);
+      });
+
+      return !conflictingBookings;
+    } catch (error) {
+      console.error("Error checking accommodation availability:", error);
+      setAvailabilityError(error instanceof Error ? error.message : "Failed to check accommodation availability. Please try again.");
+      return false;
+    }
   };
 
   const checkAccommodationAvailabilityForAll = async () => {
-    if (!formData.checkInDate || !formData.checkOutDate) return;
-    
-    const availability: Record<string, AccommodationAvailability> = {};
-    
-    for (const type of Object.keys(accommodationPrices)) {
-      const isAvailable = await checkAccommodationAvailability(
-        formData.checkInDate,
-        formData.checkOutDate,
-        type
-      );
-      availability[type] = isAvailable ? {
-        type,
-        dates: [{
-          start: formData.checkInDate,
-          end: formData.checkOutDate
-        }]
-      } : {
-        type,
-        dates: []
-      };
+    if (!formData.checkInDate || !formData.checkOutDate) {
+      setAvailabilityError("Please select both check-in and check-out dates");
+      return;
     }
     
-    setAccommodationAvailability(availability);
-  };
-
-  const handleInquirySubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    setIsCheckingAvailability(true);
+    setAvailabilityError(null);
+    
     try {
-      await addDoc(collection(db, "inquiries"), inquiryData);
-      alert("Inquiry sent successfully!");
-      setInquiryData({ name: "", email: "", phone: "", message: "" });
-      setShowInquiry(false);
+      const availability: Record<string, AccommodationAvailability> = {};
+      const checkPromises = Object.keys(accommodationPrices).map(async (type) => {
+        const isAvailable = await checkAccommodationAvailability(
+          formData.checkInDate!,
+          formData.checkOutDate!,
+          type
+        );
+        
+        availability[type] = {
+          type,
+          dates: isAvailable ? [{
+            start: formData.checkInDate!,
+            end: formData.checkOutDate!
+          }] : []
+        };
+      });
+
+      await Promise.all(checkPromises);
+      setAccommodationAvailability(availability);
     } catch (error) {
-      console.error("Error sending inquiry:", error);
-      alert("Failed to send inquiry. Please try again.");
+      console.error("Error checking availability for all accommodations:", error);
+      setAvailabilityError(error instanceof Error ? error.message : "Failed to check availability. Please try again.");
+    } finally {
+      setIsCheckingAvailability(false);
     }
   };
 
@@ -659,75 +700,9 @@ const Booking = () => {
       <Navbar />
       <div className="booking-page">
         <div className="booking-image">
-          <img src="/src/assets/sunshinetrees.jpg" alt="Forest"/>
+          <img src={mountainImage} alt="Mountain view at Canaville Resort" />
         </div>
         
-        <button 
-          className="inquiry-button"
-          onClick={() => setShowInquiry(true)}
-          aria-label="Open Inquiry Form"
-        >
-          <i className="fas fa-question-circle"></i>
-          <span className="inquiry-label">Send Inquiry</span>
-        </button>
-
-        {showInquiry && (
-          <div className="inquiry-modal" role="dialog" aria-labelledby="inquiry-title">
-            <div className="inquiry-content">
-              <h3 id="inquiry-title">Send an Inquiry</h3>
-              <form onSubmit={handleInquirySubmit}>
-                <div className="form-control">
-                  <label htmlFor="inquiry-name">Name</label>
-                  <input
-                    id="inquiry-name"
-                    type="text"
-                    placeholder="Enter your name"
-                    value={inquiryData.name}
-                    onChange={(e) => setInquiryData({...inquiryData, name: e.target.value})}
-                    required
-                  />
-                </div>
-                <div className="form-control">
-                  <label htmlFor="inquiry-email">Email</label>
-                  <input
-                    id="inquiry-email"
-                    type="email"
-                    placeholder="Enter your email"
-                    value={inquiryData.email}
-                    onChange={(e) => setInquiryData({...inquiryData, email: e.target.value})}
-                    required
-                  />
-                </div>
-                <div className="form-control">
-                  <label htmlFor="inquiry-phone">Phone</label>
-                  <input
-                    id="inquiry-phone"
-                    type="tel"
-                    placeholder="Enter your phone number"
-                    value={inquiryData.phone}
-                    onChange={(e) => setInquiryData({...inquiryData, phone: e.target.value})}
-                    required
-                  />
-                </div>
-                <div className="form-control">
-                  <label htmlFor="inquiry-message">Message</label>
-                  <textarea
-                    id="inquiry-message"
-                    placeholder="How can we help you?"
-                    value={inquiryData.message}
-                    onChange={(e) => setInquiryData({...inquiryData, message: e.target.value})}
-                    required
-                  ></textarea>
-                </div>
-                <div className="inquiry-buttons">
-                  <button type="submit">Send Inquiry</button>
-                  <button type="button" onClick={() => setShowInquiry(false)}>Close</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
-
         <div className="booking-form-container">
           <div className="booking-form-inner">
             <h2 className="booking-title">Book a Service</h2>
@@ -821,6 +796,8 @@ const Booking = () => {
                       type="date" 
                       value={formData.date} 
                       onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                      min={today}
+                      max={maxDate}
                       required 
                     />
                     {formErrors.date && <span className="error-message">{formErrors.date}</span>}
@@ -834,6 +811,8 @@ const Booking = () => {
                       type="time" 
                       value={formData.time} 
                       onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                      min="08:00"
+                      max="20:00"
                       required 
                     />
                     {formErrors.time && <span className="error-message">{formErrors.time}</span>}
@@ -1016,15 +995,26 @@ const Booking = () => {
                 <div className="tab-content">
                   <div className="form-section">
                     <h3>Accommodation</h3>
+                    {availabilityError && (
+                      <div className="alert alert-error">
+                        {availabilityError}
+                      </div>
+                    )}
                     <div className="date-range">
                       <div className="form-control">
                         <label>Check-in Date</label>
                         <input
                           type="date"
                           value={formData.checkInDate}
-                          onChange={(e) => setFormData({ ...formData, checkInDate: e.target.value })}
-                          className={formErrors.checkInDate ? 'error' : ''}
+                          onChange={(e) => {
+                            setFormData({ ...formData, checkInDate: e.target.value });
+                            setAvailabilityError(null);
+                          }}
+                          className={`form-input ${formErrors.checkInDate ? 'error' : ''} ${isCheckingAvailability ? 'loading' : ''}`}
+                          min={today}
+                          max={maxDate}
                           required={formData.accommodation.length > 0}
+                          disabled={isCheckingAvailability}
                         />
                         {formErrors.checkInDate && <span className="error-message">{formErrors.checkInDate}</span>}
                       </div>
@@ -1033,42 +1023,28 @@ const Booking = () => {
                         <input
                           type="date"
                           value={formData.checkOutDate}
-                          min={formData.checkInDate}
-                          onChange={(e) => setFormData({ ...formData, checkOutDate: e.target.value })}
-                          className={formErrors.checkOutDate ? 'error' : ''}
+                          min={formData.checkInDate || today}
+                          max={maxDate}
+                          onChange={(e) => {
+                            setFormData({ ...formData, checkOutDate: e.target.value });
+                            setAvailabilityError(null);
+                          }}
+                          className={`form-input ${formErrors.checkOutDate ? 'error' : ''} ${isCheckingAvailability ? 'loading' : ''}`}
                           required={formData.accommodation.length > 0}
+                          disabled={isCheckingAvailability}
                         />
                         {formErrors.checkOutDate && <span className="error-message">{formErrors.checkOutDate}</span>}
                       </div>
                     </div>
                     
-                    <div className="check-in-out">
-                      <div className="form-control">
-                        <label>Check-in Time</label>
-                        <input
-                          type="time"
-                          value={formData.checkInTime}
-                          onChange={(e) => setFormData({ ...formData, checkInTime: e.target.value })}
-                          className={formErrors.checkInTime ? 'error' : ''}
-                          required={formData.accommodation.length > 0}
-                        />
-                        {formErrors.checkInTime && <span className="error-message">{formErrors.checkInTime}</span>}
+                    {isCheckingAvailability && (
+                      <div className="loading-message">
+                        Checking availability...
                       </div>
-                      <div className="form-control">
-                        <label>Check-out Time</label>
-                        <input
-                          type="time"
-                          value={formData.checkOutTime}
-                          onChange={(e) => setFormData({ ...formData, checkOutTime: e.target.value })}
-                          className={formErrors.checkOutTime ? 'error' : ''}
-                          required={formData.accommodation.length > 0}
-                        />
-                        {formErrors.checkOutTime && <span className="error-message">{formErrors.checkOutTime}</span>}
-                      </div>
-                    </div>
+                    )}
 
                     {Object.entries(accommodationPrices).map(([type, options]) => (
-                      <div key={type} className="accommodation-item">
+                      <div key={type} className={`accommodation-item ${isCheckingAvailability ? 'loading' : ''}`}>
                         <h4>
                           {type}
                           {!accommodationAvailability[type]?.dates && formData.checkInDate && formData.checkOutDate && (
@@ -1108,7 +1084,7 @@ const Booking = () => {
                                   }
                                   setFormData({ ...formData, accommodation: newAccommodation });
                                 }}
-                                disabled={!accommodationAvailability[type]}
+                                disabled={!accommodationAvailability[type] || isCheckingAvailability}
                               />
                               {option} - Ksh {price}
                             </label>

@@ -1,4 +1,14 @@
-// filepath: /c:/Users/ADMIN/Desktop/canaville/Frontend/src/admin/Bookings.tsx
+/**
+ * Admin Bookings Component
+ * 
+ * This component provides the admin interface for managing bookings at Canaville Resort.
+ * Features include:
+ * - View all bookings
+ * - Filter bookings by status
+ * - Update booking status
+ * - View booking details
+ * - Responsive sidebar navigation
+ */
 
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
@@ -8,6 +18,7 @@ import AdminSidebar from "./AdminSidebar";
 import "./Bookings.css";
 
 const Bookings = () => {
+  // Interface for booking data structure
   interface Booking {
     id: string;
     name: string;
@@ -24,10 +35,14 @@ const Bookings = () => {
     };
   }
 
+  // State management
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // Fetch bookings from Firestore
+  /**
+   * Fetches all bookings from Firestore
+   * Updates the bookings state with the fetched data
+   */
   useEffect(() => {
     const fetchBookings = async () => {
       try {
@@ -56,63 +71,85 @@ const Bookings = () => {
     fetchBookings();
   }, []);
 
+  /**
+   * Formats the timestamp to a readable date string
+   * @param {Object} timestamp - Firestore timestamp object
+   * @returns {string} Formatted date string
+   */
+  const formatDate = (timestamp: { seconds: number; nanoseconds: number }) => {
+    const date = new Date(timestamp.seconds * 1000);
+    return date.toLocaleDateString();
+  };
+
+  /**
+   * Renders the status badge with appropriate styling
+   * @param {string} status - Booking status
+   * @returns {JSX.Element} Status badge component
+   */
+  const renderStatusBadge = (status: string) => {
+    switch (status) {
+      case "Confirmed":
+        return (
+          <span className="status-badge confirmed">
+            <FiCheckCircle /> Confirmed
+          </span>
+        );
+      case "Pending":
+        return (
+          <span className="status-badge pending">
+            <FiClock /> Pending
+          </span>
+        );
+      case "Cancelled":
+        return (
+          <span className="status-badge cancelled">
+            <FiXCircle /> Cancelled
+          </span>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div className={`bookings-container ${isSidebarOpen ? "sidebar-open" : ""}`}>
-      {/* Sidebar Toggle Button */}
-      <button className="sidebar-toggle" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+    <div className="admin-bookings">
+      {/* Mobile menu button */}
+      <button
+        className="mobile-menu-button"
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+      >
         <FiMenu />
       </button>
 
-      {/* Sidebar */}
+      {/* Admin sidebar */}
       {isSidebarOpen && <AdminSidebar onClose={() => setIsSidebarOpen(false)} />}
 
+      {/* Main content */}
       <div className="bookings-content">
         <h1>Bookings</h1>
-        <p>View and manage all customer bookings.</p>
-
-        {/* Bookings Table */}
+        
+        {/* Bookings table */}
         <div className="bookings-table">
           <table>
             <thead>
               <tr>
-                <th>Booking ID</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Activities</th>
-                <th>Food</th>
-                <th>Drinks</th>
-                <th>Accommodation</th>
-                <th>Total Cost</th>
-                <th>Status</th>
                 <th>Date</th>
+                <th>Status</th>
+                <th>Total Cost</th>
               </tr>
             </thead>
             <tbody>
-              {bookings.length > 0 ? (
-                bookings.map((booking) => (
-                  <tr key={booking.id}>
-                    <td>{booking.id}</td>
-                    <td>{booking.name}</td>
-                    <td>{booking.email}</td>
-                    <td>{booking.activities?.join(", ") || "N/A"}</td>
-                    <td>{booking.food?.join(", ") || "N/A"}</td>
-                    <td>{booking.drinks?.join(", ") || "N/A"}</td>
-                    <td>{booking.accommodation?.join(", ") || "N/A"}</td>
-                    <td>KES {booking.totalCost}</td>
-                    <td className={`status ${booking.status}`}>
-                      {booking.status === "Confirmed" && <FiCheckCircle className="status-icon success" />}
-                      {booking.status === "Pending" && <FiClock className="status-icon pending" />}
-                      {booking.status === "Cancelled" && <FiXCircle className="status-icon failed" />}
-                      {booking.status}
-                    </td>
-                    <td>{new Date(booking.timestamp?.seconds * 1000).toLocaleString()}</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={10} className="no-data">No bookings found.</td>
+              {bookings.map((booking) => (
+                <tr key={booking.id}>
+                  <td>{booking.name}</td>
+                  <td>{booking.email}</td>
+                  <td>{formatDate(booking.timestamp)}</td>
+                  <td>{renderStatusBadge(booking.status)}</td>
+                  <td>Ksh {booking.totalCost}</td>
                 </tr>
-              )}
+              ))}
             </tbody>
           </table>
         </div>

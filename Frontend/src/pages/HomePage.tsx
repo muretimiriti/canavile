@@ -7,6 +7,7 @@ import UpcomingEvents from "../components/UpcomingEvents";
 import "./Homepage.css"; // Import custom CSS for styling
 import { motion } from "motion/react"
 import { Footer } from "../components/Footer";
+import { Link } from "react-router-dom";
 
 const HomePage: React.FC = () => {
   return (
@@ -40,15 +41,17 @@ const HomePage: React.FC = () => {
             >
               Enjoy camping, team building, and serene nature walks at our picturesque resort.
             </motion.p>
-            <motion.button
-              className="hero-button"
-              onClick={() => window.location.href = "/pages/Booking"}
+            <motion.div
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.5, delay: 2 }}
             >
-              Book Your Stay
-            </motion.button>
+              <Link to="/booking">
+                <button className="hero-button">
+                  Book Your Stay
+                </button>
+              </Link>
+            </motion.div>
           </div>
 
           {/* Featured Services Section */}
